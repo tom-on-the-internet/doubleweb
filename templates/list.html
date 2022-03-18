@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>List | Double Web</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♊</text></svg>"
+    />
+    <link href="/static/css/water.css" rel="stylesheet" />
+    <link href="/static/css/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1 class="double">Doubled Numbers</h1>
+    <p>
+      These are the numbers that have been doubled so far. Aren't they great?
+    </p>
+    <table>
+      <tr>
+        <th>Original</th>
+        <th>Double</th>
+      </tr>
+      {{range $pair := .Dbls}}
+      <tr>
+        <td>{{index $pair 0}}</td>
+        <td>{{index $pair 1}}</td>
+      </tr>
+      {{end}}
+    </table>
+    <a href="/">Home</a>
+  </body>
+</html>

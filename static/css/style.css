@@ -1,0 +1,24 @@
+.double {
+  font-size: 4rem;
+  animation-name: double;
+  animation-duration: 4s;
+  text-shadow: 5px 5px 0px black, 10px 10px 0px grey, 15px 15px 0px black;
+}
+
+.pitch {
+  display: flex;
+  align-items: center;
+}
+
+.pitch img {
+  width: 150px;
+}
+
+@keyframes double {
+  0% {
+    text-shadow: none;
+  }
+  100% {
+    text-shadow: 5px 5px 0px black, 10px 10px 0px grey, 15px 15px 0px black;
+  }
+}
