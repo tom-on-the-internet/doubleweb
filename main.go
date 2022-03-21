@@ -11,15 +11,15 @@ import (
 var staticFiles embed.FS
 
 //go:embed templates
-var templates embed.FS
+var templateFS embed.FS
 
 var (
-	t      *template.Template
-	dblMap = make(map[int]int)
-	dblArr []int
+	templates *template.Template
+	dblList   *doubleList
 )
 
 func main() {
+	seed()
 	parseTemplates()
 	handleStaticFiles()
 	http.HandleFunc("/", indexHandler)
@@ -31,12 +31,18 @@ func main() {
 }
 
 func parseTemplates() {
-	parsedTemplates, err := template.ParseFS(templates, "templates/*")
+	parsedTemplates, err := template.ParseFS(templateFS, "templates/*")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	t = parsedTemplates
+	templates = parsedTemplates
+}
+
+func seed() {
+	dblList = newDoubleList()
+	dblList.add(3)
+	dblList.add(8)
 }
 
 func serve() {

@@ -1,9 +1,7 @@
 package main
 
 import (
-	"math"
 	"net/http"
-	"sort"
 	"strconv"
 )
 
@@ -26,13 +24,13 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_ = t.ExecuteTemplate(w, "index.html", nil)
+	_ = templates.ExecuteTemplate(w, "index.html", nil)
 }
 
 func newHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		_ = t.ExecuteTemplate(w, "new.html", nil)
+		_ = templates.ExecuteTemplate(w, "new.html", nil)
 
 	case http.MethodPost:
 		err := r.ParseForm()
@@ -53,22 +51,13 @@ func newHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// check for overflow
-		if abs(num) > math.MaxInt/2 {
+		if !dblList.canHandle(num) {
 			showError(w, http.StatusBadRequest, "Number too big to double.")
 
 			return
 		}
 
-		dbl := num * 2
-
-		// insert if new
-		if _, ok := dblMap[num]; !ok {
-			dblMap[num] = dbl
-
-			dblArr = append(dblArr, num)
-
-			sort.Ints(dblArr)
-		}
+		dblList.add(num)
 
 		http.Redirect(w, r, "/success", http.StatusSeeOther)
 
@@ -92,20 +81,7 @@ func listHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dbls := [][2]string{}
-
-	for _, num := range dblArr {
-		dbl, ok := dblMap[num]
-
-		dblStr := "pending"
-		if ok {
-			dblStr = strconv.Itoa(dbl)
-		}
-
-		dbls = append(dbls, [2]string{strconv.Itoa(num), dblStr})
-	}
-
-	_ = t.ExecuteTemplate(w, "list.html", struct{ Dbls [][2]string }{dbls})
+	_ = templates.ExecuteTemplate(w, "list.html", struct{ Dbls [][2]string }{dblList.list()})
 }
 
 func successHandler(w http.ResponseWriter, r *http.Request) {
@@ -119,19 +95,11 @@ func successHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_ = t.ExecuteTemplate(w, "success.html", nil)
-}
-
-func abs(num int) int {
-	if num < 0 {
-		num *= -1
-	}
-
-	return num
+	_ = templates.ExecuteTemplate(w, "success.html", nil)
 }
 
 func showError(w http.ResponseWriter, code int, message string) {
-	_ = t.ExecuteTemplate(w, "error.html", struct {
+	_ = templates.ExecuteTemplate(w, "error.html", struct {
 		Code    int
 		Message string
 	}{
