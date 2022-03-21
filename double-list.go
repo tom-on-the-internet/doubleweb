@@ -4,6 +4,7 @@ import (
 	"math"
 	"sort"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -11,12 +12,14 @@ import (
 type doubleList struct {
 	dblArr []int
 	dblMap map[int]int
+	mutex  *sync.Mutex
 }
 
 func newDoubleList() *doubleList {
 	return &doubleList{
 		dblArr: []int{},
 		dblMap: make(map[int]int),
+		mutex:  &sync.Mutex{},
 	}
 }
 
@@ -34,6 +37,8 @@ func (d *doubleList) add(num int) {
 
 	go func() {
 		time.Sleep(10 * time.Second)
+		d.mutex.Lock()
+		defer d.mutex.Unlock()
 		d.dblMap[num] = num * 2
 	}()
 }
@@ -50,6 +55,9 @@ func (d *doubleList) has(num int) bool {
 
 func (d *doubleList) list() [][2]string {
 	dbls := [][2]string{}
+
+	d.mutex.Lock()
+	defer d.mutex.Unlock()
 
 	for _, num := range d.dblArr {
 		dbl, ok := d.dblMap[num]
