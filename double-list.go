@@ -4,6 +4,7 @@ import (
 	"math"
 	"sort"
 	"strconv"
+	"time"
 )
 
 // doubleList is a structure for doubling integers
@@ -31,7 +32,10 @@ func (d *doubleList) add(num int) {
 	d.dblArr = append(d.dblArr, num)
 	sort.Ints(d.dblArr)
 
-	d.dblMap[num] = num * 2
+	go func() {
+		time.Sleep(10 * time.Second)
+		d.dblMap[num] = num * 2
+	}()
 }
 
 func (d *doubleList) has(num int) bool {
