@@ -2,7 +2,9 @@
 <html lang="en">
   {{ template "head" "Error" }}
   <body>
-    <h1 class="double">Error</h1>
+    <h1 class="double">
+      <a href="/">Error</a>
+    </h1>
     <p><code>{{ .Code}}</code></p>
     <p>{{ .Message}}</p>
     <a href="/">Home</a>
