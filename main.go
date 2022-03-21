@@ -23,12 +23,7 @@ var (
 func main() {
 	seed()
 	parseTemplates()
-	handleStaticFiles()
-	http.HandleFunc("/", indexHandler)
-	http.HandleFunc("/new", newHandler)
-	http.HandleFunc("/list", listHandler)
-	http.HandleFunc("/success", successHandler)
-
+	registerHandlers()
 	serve()
 }
 
@@ -39,6 +34,15 @@ func parseTemplates() {
 	}
 
 	templates = parsedTemplates
+}
+
+func registerHandlers() {
+	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/new", newHandler)
+	http.HandleFunc("/list", listHandler)
+	http.HandleFunc("/success", successHandler)
+
+	handleStaticFiles()
 }
 
 func seed() {

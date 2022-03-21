@@ -37,6 +37,7 @@ func (d *doubleList) add(num int) {
 
 	go func() {
 		time.Sleep(10 * time.Second)
+
 		d.mutex.Lock()
 		defer d.mutex.Unlock()
 		d.dblMap[num] = num * 2
