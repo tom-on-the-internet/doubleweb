@@ -10,7 +10,15 @@ import (
 func handleStaticFiles() {
 	staticFS := http.FS(staticFiles)
 	fs := http.FileServer(staticFS)
-	http.Handle("/static/", fs)
+
+	eTag := randSeq(10)
+	var handler http.HandlerFunc = func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("ETag", eTag)
+		w.Header().Add("Cache-Control", "max-age=3600")
+		fs.ServeHTTP(w, r)
+	}
+
+	http.Handle("/static/", handler)
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {

@@ -4,7 +4,9 @@ import (
 	"embed"
 	"html/template"
 	"log"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
 //go:embed static
@@ -40,6 +42,8 @@ func parseTemplates() {
 }
 
 func seed() {
+	rand.Seed(time.Now().UnixNano())
+
 	dblList = newDoubleList()
 	dblList.add(3)
 	dblList.add(8)

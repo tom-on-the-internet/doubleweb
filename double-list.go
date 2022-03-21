@@ -72,11 +72,3 @@ func (d *doubleList) list() [][2]string {
 
 	return dbls
 }
-
-func abs(num int) int {
-	if num < 0 {
-		num *= -1
-	}
-
-	return num
-}
