@@ -54,7 +54,7 @@ func (d *doubleList) list() [][2]string {
 	for _, num := range d.dblArr {
 		dbl, ok := d.dblMap[num]
 
-		dblStr := "pending"
+		dblStr := "⏳"
 		if ok {
 			dblStr = strconv.Itoa(dbl)
 		}
